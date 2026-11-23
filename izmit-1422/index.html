@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>伊兹密特 · 1422｜地形与城市</title>
+  <link rel="stylesheet" href="style.css?v=20261123-west-fort-2">
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <main id="app">
+    <div id="scene" role="img" aria-label="1422年伊兹密特三维场景：北部山坡城区、南部城墙与三处地标、城外营地及海湾港口。可拖动旋转、滚轮缩放。"></div>
+    <div id="labels" aria-label="场景地标"></div>
+    <header>
+      <div class="masthead"><span class="eyebrow">NICOMEDIA · BITHYNIA</span><h1>伊兹密特 <span>1422</span></h1><p>山城、城墙与海湾</p></div>
+      <button id="sources-button" class="quiet" aria-haspopup="dialog">资料与复原依据 <span>↗</span></button>
+    </header>
+    <nav class="views" aria-label="观察位置">
+      <span class="nav-caption">观察位置</span>
+      <button data-view="overview" aria-pressed="true">全城鸟瞰</button>
+      <button data-view="south" aria-pressed="false">城南三处地标</button>
+      <button data-view="harbor" aria-pressed="false">从港口望城</button>
+      <button data-view="plan" aria-pressed="false">俯视与比例</button>
+    </nav>
+    <aside class="landmarks" aria-label="建筑索引">
+      <div class="nav-caption">城南建筑 <span>点击靠近</span></div>
+      <button data-site="mosque"><span class="number">01</span><span>苏莱曼帕夏清真寺<small>Orhan Camii</small></span><b>↗</b></button>
+      <button data-site="bath"><span class="number">02</span><span>苏莱曼帕夏大浴场<small>Süleyman Paşa Hamamı</small></span><b>↗</b></button>
+      <button data-site="fort"><span class="number">03</span><span>罗马堡垒 · 军营<small>小说设定 · 南墙驻军堡垒</small></span><b>↗</b></button>
+    </aside>
+    <section id="detail" aria-live="polite">
+      <div class="detail-top"><span id="detail-kicker">地形与聚落</span><button id="close-detail" aria-label="收起建筑详情" hidden>×</button></div>
+      <h2 id="detail-title">从海湾进入山城</h2>
+      <p id="detail-text">海港在南，城区沿山坡向北展开。城墙下方是营地；清真寺、浴场和驻军堡垒集中在南缘。</p>
+      <div id="detail-meta">真实高程 × 小说布局</div>
+    </section>
+    <div class="compass" aria-label="方位指示"><svg viewBox="0 0 72 72" aria-hidden="true"><g id="compass-needle"><path d="M36 14 L43 46 L36 41 L29 46Z" fill="#8d5037"/><path d="M36 14V41L29 46Z" fill="#d7baa0"/></g><circle cx="36" cy="36" r="30" fill="none" stroke="#71807d" stroke-opacity=".3"/></svg><span id="north">北 N</span></div>
+    <footer>
+      <div class="toggles"><label><input id="labels-toggle" type="checkbox" checked>地名</label><label><input id="contours-toggle" type="checkbox">等高线</label><label><input id="route-toggle" type="checkbox" checked>主路</label></div>
+      <span class="gesture">拖动旋转 · 滚轮缩放 · 右键平移</span>
+      <span class="terrain-note">高程 1∶1 <i></i> DEM 地形</span>
+    </footer>
+    <div id="loading"><span class="loader"></span><strong>正在铺展山城</strong><span>读取地形与建筑</span></div>
+    <div id="error" role="alert" hidden></div>
+    <dialog id="sources">
+      <div class="dialog-head"><div><span class="eyebrow">SOURCES & RECONSTRUCTION</span><h2>依据在哪里，复原到哪里</h2></div><button id="sources-close" aria-label="关闭资料">×</button></div>
+      <section><h3>真实地形与位置</h3><p>地面来自 <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">Mapzen / AWS Terrain Tiles</a> 的 Terrarium 高程瓦片，按米建立网格，垂直比例 1∶1。三处建筑周围作局部台地整平。海岸参照现代 OpenStreetMap 岸线作简化，省去现代突堤；1422年的滩地、淤积和填海差异尚未复原。</p><p>清真寺与浴场的定位参考 <a href="https://www.openstreetmap.org/way/1081117581" target="_blank" rel="noopener">清真寺建筑轮廓</a>、<a href="https://www.openstreetmap.org/way/1090339941" target="_blank" rel="noopener">浴场建筑轮廓</a>。清真寺模型中心为40.768501° N、29.919695° E；浴场为40.766990° N、29.920699° E。地图数据 © OpenStreetMap contributors，ODbL。</p></section>
+      <section><h3>三处建筑的比例</h3><p><b>清真寺：</b><a href="https://www.kulturportali.gov.tr/turkiye/kocaeli/gezilecekyer/orhan-camii-gazi-suleyman-pasa-camii" target="_blank" rel="noopener">土耳其文化旅游部资料</a>将 Orhan Camii 与 Gazi Süleyman Paşa Camii 列为同一座建筑。现存地图轮廓面积约440平方米，最小外接矩形为18.4 × 29.1米。模型按此长宽安排礼拜堂和门廊，院落另计。</p><p><b>大浴场：</b>现存地图轮廓面积约363平方米，最小外接矩形为18.6 × 21.1米。模型保留双浴室、大小穹顶与烟囱，并使用相同米制尺度。两组尺寸来自现代地图轮廓估算；高度和1422年外观按体量复原。</p><p><b>堡垒：</b>按小说复原为100 × 86米的驻军石堡，中心约40.765989° N、29.918634° E。它在主城门西侧的城墙内，最近的接墙端距主门约70米，南侧堡墙接入南城墙；北侧堡门通过城内短路连接主路。这是小说选址，不是Karaburç遗址定位。</p></section>
+      <section><h3>小说设定与城门位置</h3><p>读取作家助手第二卷第120、122、123章草稿：港口上岸后经过城外营地；石堡与城墙相连、守卫城门；军队巡逻城墙与街道；民兵住在偏门附近的大浴场。城内约四百户来自本地第53章。</p><p>按你最新的现代地图，把城墙改为1,630 × 1,630米、约2.66平方公里，南边略向东南倾斜。橙色路线按图中itiner-e的Nicomedia–Artanes路线坐标校正；主城门位于其与南墙的交点，距南边中点约38米。堡垒在主门西侧城内，营地在城外、主路东侧。城墙四角与完整建筑形态为小说复原。</p></section>
+      <section><h3>本次对齐的现代地图</h3><p>用图中的Nicomedia地点与南侧道路交会处对齐地理位置，并以你指定的约1.63公里边长归整城墙。截图面积为2.67平方公里；模型采用2.6569平方公里。截图红线是本次小说城墙范围的依据。</p><a href="sources/modern-map-reference.png" target="_blank" rel="noopener"><img class="map-reference" src="sources/modern-map-reference.png" alt="用户提供的现代地形图：红线城墙范围、南侧道路及北向主路"><span>查看原始地图 ↗</span></a></section>
+    </dialog>
+  </main>
+  <script type="module" src="scene.js?v=20261123-compass"></script>
+</body>
+</html>
